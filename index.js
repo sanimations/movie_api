@@ -1,5 +1,7 @@
 const express = require('express'),
-    morgan = require('morgan');
+    morgan = require('morgan'),
+    fs = require('fs'),
+    path = require('path');
 
 const app = express();
 
@@ -65,6 +67,10 @@ app.get('/', (req, res) => {
 app.get('documentation.html', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+
+app.use(morgan('combined',{stream: accessLogStream}));
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
