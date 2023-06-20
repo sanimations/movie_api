@@ -51,9 +51,30 @@ let queerFilms = [
         director: 'Mike Mills'
     }
 ]
+let users = [
+    {
+        username: 'Mas52yaG',
+        email: 'notFakeEmail@yahoo.com',
+        LGBT: 'Queer',
+        id: 1
+    },
+    {
+        username: 'UtBakaksrshiHA',
+        email: 'coolTutors@careerfoundry.com',
+        LGBT: '',
+        id: 2   
+    },
+    {
+        username: 'coDDrew',
+        email: 'mentororing@careerfoundry.com',
+        LGBT: '',
+        id: 3
+    }
+]
 
 app.use(morgan('common'));
 
+//Get list of all movies
 app.get('/movies', (req, res) => {
     res.json(queerFilms);
 })
@@ -68,6 +89,54 @@ app.get('documentation.html', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
 
+//Gets one movie's data by entering in the title
+app.get('/movies/:title', (req, res) => {
+    res.json(queerFilms.find((movie) =>
+      { return movie.title === req.params.title }));
+});
+
+//Gets one director's data by entering in their name
+app.get('/movies/:director', (req, res) => {
+    res.json(queerFilms.find((name) =>
+      { return name.director === req.params.director }));
+});
+
+//Allows a new user to register
+app.post('/users', (req, res) => {
+    let newUser = req.body;
+  
+    if (!newUser.username) {
+      const message = 'Missing username in request body';
+      res.status(400).send(message);
+    } else {
+      newUser.id = uuid.v4();
+      users.push(newUser);
+      res.status(201).send(newUser);
+    }
+});
+
+//Allows users to update their username  
+app.put('/users/:username/', (req, res) => {
+    let user = users.find((user) => { return user.username === req.params.username });
+  
+    if (user) {
+      user.username = req.params.username;
+      res.status(201).send(req.params.username + ' will be the new username');
+    } else {
+      res.status(404).send('User with the username ' + req.params.username + ' was not found.');
+    }
+});
+
+//Allows users to delete their user profile
+app.delete('/users/:id', (req, res) => {
+    let user = users.find((user) => {return user.id === req.params.id});
+
+    if(user){
+        users = users.filter((obj) => { return obj.id !== req.params.id});
+        res.status(201).send('User ' + req.params.id + ' was deleted.');
+    }
+});
+  
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
 app.use(morgan('combined',{stream: accessLogStream}));

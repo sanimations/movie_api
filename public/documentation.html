@@ -6,5 +6,30 @@
     the full application that will be titled "PrideFlix".  This
     API will separate each film into different categories that have
     not been determined just yet.
+
+    --'/movies' uses the GET request to return a list of all movies
+
+    --'/movies/:title' uses the GET request to return the data for a single movie by title
+
+    '/movies/:genre' uses the GET request to 
+
+    --'/movies/:director' uses the GET request to get information on a director using their name
+
+    --'/users/' uses POST request to allow a new user to register
+    returns JSON object with the new user information and an ID number
+
+    --'/users/:username' uses PUT request so user can update their username, 
+    returns JSON object with new user information including the new username
+
+    --'/users/:id' uses DELETE request so the user can delete their account, 
+    this will return a statement that the email has been deleted
+
+    //All movies can have a value of 'no' on the favorites property, and will only be added when 'yes' is used with this endpoint
+    '/movies/:title/:favorites' uses PUT request so user can add a movie to their favorites 
+
+    '/movies/:title/:favorites' uses PUT request so user can remove a movie from their favorites
+
+
+
 </html>
 
