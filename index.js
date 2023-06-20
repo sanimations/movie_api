@@ -9,6 +9,7 @@ let queerFilms = [
     {
         title: 'Tangerine',
         director: 'Sean Baker',
+        genre: 'thriller',
         favorite: false
     },
     {
