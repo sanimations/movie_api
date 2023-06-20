@@ -8,47 +8,58 @@ const app = express();
 let queerFilms = [
     {
         title: 'Tangerine',
-        director: 'Sean Baker'
+        director: 'Sean Baker',
+        favorite: false
     },
     {
         title: 'Happy Together',
-        director: 'Wong Kar-Wai'
+        director: 'Wong Kar-Wai',
+        favorite: false       
     },
     {
         title:'Love, Simon',
-        director: 'Greg Berlanti'
+        director: 'Greg Berlanti',
+        favorite: false
     },
     {
         title: 'The Watermelon Woman',
-        director: 'Cherly Dunye'
+        director: 'Cherly Dunye',
+        favorite: false
     },
     {
         title: 'Saving Face',
-        director: 'Alice Wu'
+        director: 'Alice Wu',
+        favorite: false
     },
     {
         title: 'But I\'m a Cheerleader',
-        director: 'Jamie Babbit'
+        director: 'Jamie Babbit',
+        favorite: false
     },
     {
         title: 'Moonlight',
-        director: 'Barry Jenkins'
+        director: 'Barry Jenkins',
+        favorite: false
     },
     {
         title: 'Portrait of a Lady on Fire',
-        director: 'Céline Sciamma'
+        director: 'Céline Sciamma',
+        favorite: false
     },
     {
         title: 'Paris is Burning',
-        director: 'Jennie Livingston'
+        director: 'Jennie Livingston',
+        favorite: false
     },
     {
         title: 'Pariah',
-        director: 'Dee Rees'
+        director: 'Dee Rees',
+        favorite: false
     },
     {
         title: 'Beginners',
-        director: 'Mike Mills'
+        director: 'Mike Mills',
+        favorite: false
     }
 ]
 let users = [
