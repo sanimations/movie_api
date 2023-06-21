@@ -1,9 +1,12 @@
 const express = require('express'),
     morgan = require('morgan'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    bodyParser = require('body-parser');
 
 const app = express();
+
+app.use(bodyParser.json());
 
 let queerFilms = [
     {
@@ -79,21 +82,21 @@ let users = [
         username: 'Mas52yaG',
         email: 'notFakeEmail@yahoo.com',
         LGBT: 'Queer',
-        id: 1
+        id: '1'
     },
     {
         name: 'Utkarsha',
         username: 'UtBakaksrshiHA',
         email: 'coolTutors@careerfoundry.com',
         LGBT: '',
-        id: 2   
+        id: '2'   
     },
     {
         name: 'Drew',
         username: 'coDDrew',
         email: 'mentororing@careerfoundry.com',
         LGBT: '',
-        id: 3
+        id: '3'
     }
 ]
 
