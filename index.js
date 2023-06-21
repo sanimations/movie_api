@@ -9,78 +9,115 @@ let queerFilms = [
     {
         title: 'Tangerine',
         director: 'Sean Baker',
-        genre: 'thriller',
-        favorite: false
+        genres: ['Drama', ' Comedy'],
+        favorites: false
     },
     {
         title: 'Happy Together',
         director: 'Wong Kar-Wai',
-        favorite: false       
+        genres: ['Romance', ' Drama'],
+        favorites: false       
     },
     {
         title:'Love, Simon',
         director: 'Greg Berlanti',
-        favorite: false
+        genres: ['Romance', ' Comedy', ' ComingOfAge'],
+        favorites: false
     },
     {
         title: 'The Watermelon Woman',
         director: 'Cherly Dunye',
-        favorite: false
+        genres: ['Comedy', ' Romance'],
+        favorites: false
     },
     {
         title: 'Saving Face',
         director: 'Alice Wu',
-        favorite: false
+        genres: ['Romance', ' Comedy'],
+        favorites: false
     },
     {
         title: 'But I\'m a Cheerleader',
         director: 'Jamie Babbit',
-        favorite: false
+        genres: ['Comedy', ' Romance', ' Satire'],
+        favorites: false
     },
     {
         title: 'Moonlight',
         director: 'Barry Jenkins',
-        favorite: false
+        genres: ['Drama', ' ComingOfAge'],
+        favorites: false
     },
     {
         title: 'Portrait of a Lady on Fire',
         director: 'Céline Sciamma',
-        favorite: false
+        genres: ['Romance' , ' Drama', ' History'],
+        favorites: false
     },
     {
         title: 'Paris is Burning',
         director: 'Jennie Livingston',
-        favorite: false
+        genres: ['Documentary'],
+        favorites: false
     },
     {
         title: 'Pariah',
         director: 'Dee Rees',
-        favorite: false
+        genres: ['Drama'],
+        favorites: false
     },
     {
         title: 'Beginners',
         director: 'Mike Mills',
-        favorite: false
+        genres: ['Romance', 'Comedy'],
+        favorites: false
     }
 ]
 let users = [
     {
+        name: 'Sam',
         username: 'Mas52yaG',
         email: 'notFakeEmail@yahoo.com',
         LGBT: 'Queer',
         id: 1
     },
     {
+        name: 'Utkarsha',
         username: 'UtBakaksrshiHA',
         email: 'coolTutors@careerfoundry.com',
         LGBT: '',
         id: 2   
     },
     {
+        name: 'Drew',
         username: 'coDDrew',
         email: 'mentororing@careerfoundry.com',
         LGBT: '',
         id: 3
+    }
+]
+
+let genreList = [
+    {
+        Comedy: 'professional entertainment consisting of jokes and satirical sketches, intended to make an audience laugh.' 
+    }, 
+    {
+        Romance: 'One or more characters fall in love'
+    },
+    {
+        Satire: 'the use of humor, irony, exaggeration, or ridicule to expose and criticize people\'s stupidity or vices, particularly in the context of contemporary politics and other topical issues.'
+    }, 
+    {
+        ComingOfAge: 'A young person\'s transition from child to adulthood'
+    }, 
+    {
+        Drama: 'an emotional or unexpected series of events or set of circumstances.'
+    }, 
+    {
+        Documentary: 'A documentary film or documentary is a non-fictional motion-picture intended to "document reality, primarily for the purposes of instruction, education or maintaining a historical record'
+    }, 
+    {
+        History: 'Set in a specific time-period that greatly influences the plot'
     }
 ]
 
@@ -89,6 +126,11 @@ app.use(morgan('common'));
 //Get list of all movies
 app.get('/movies', (req, res) => {
     res.json(queerFilms);
+})
+
+//Get list of all users
+app.get('/users', (req, res) => {
+    res.json(users);
 })
 
 app.use(express.static('public'));
@@ -113,23 +155,28 @@ app.get('/movies/:director', (req, res) => {
       { return name.director === req.params.director }));
 });
 
+//Gets teh definition of a genre
+app.get('/:genre', (req, res) => {
+    res.json(genreList.find((genre) =>
+      { return genre === req.params.genre }));
+});
+
 //Allows a new user to register
 app.post('/users', (req, res) => {
     let newUser = req.body;
   
-    if (!newUser.username) {
-      const message = 'Missing username in request body';
+    if (!newUser.name) {
+      const message = 'Missing name in request body';
       res.status(400).send(message);
     } else {
-      newUser.id = uuid.v4();
       users.push(newUser);
       res.status(201).send(newUser);
     }
 });
 
 //Allows users to update their username  
-app.put('/users/:username/', (req, res) => {
-    let user = users.find((user) => { return user.username === req.params.username });
+app.put('/users/:name/:username/', (req, res) => {
+    let user = users.find((user) => { return user.name === req.params.name });
   
     if (user) {
       user.username = req.params.username;
@@ -146,6 +193,18 @@ app.delete('/users/:id', (req, res) => {
     if(user){
         users = users.filter((obj) => { return obj.id !== req.params.id});
         res.status(201).send('User ' + req.params.id + ' was deleted.');
+    }
+});
+
+//Allows users to add to favorites
+app.put('/movies/:title/:favorites', (req, res) => {
+    let favList = queerFilms.find((favList) => { return favList.title === req.params.title });
+  
+    if (favList) {
+      favList.favorites = req.params.favorites;
+      res.status(201).send( req.params.title + ' was added to your favorites!');
+    } else {
+      res.status(404).send(req.params.title + ' was not found.');
     }
 });
   
