@@ -12,49 +12,43 @@ let queerFilms = [
     {
         title: 'Tangerine',
         director: 'Sean Baker',
-        genres: ['Drama', ' Comedy'],
+        genres: ['Drama'],
         favorites: false
     },
     {
         title: 'Happy Together',
         director: 'Wong Kar-Wai',
-        genres: ['Romance', ' Drama'],
+        genres: ['Drama'],
         favorites: false       
     },
     {
         title:'Love, Simon',
         director: 'Greg Berlanti',
-        genres: ['Romance', ' Comedy', ' ComingOfAge'],
-        favorites: false
-    },
-    {
-        title: 'The Watermelon Woman',
-        director: 'Cherly Dunye',
-        genres: ['Comedy', ' Romance'],
+        genres: ['ComingOfAge'],
         favorites: false
     },
     {
         title: 'Saving Face',
         director: 'Alice Wu',
-        genres: ['Romance', ' Comedy'],
+        genres: ['Comedy'],
         favorites: false
     },
     {
         title: 'But I\'m a Cheerleader',
         director: 'Jamie Babbit',
-        genres: ['Comedy', ' Romance', ' Satire'],
+        genres: ['Satire'],
         favorites: false
     },
     {
         title: 'Moonlight',
         director: 'Barry Jenkins',
-        genres: ['Drama', ' ComingOfAge'],
+        genres: ['ComingOfAge'],
         favorites: false
     },
     {
         title: 'Portrait of a Lady on Fire',
         director: 'Céline Sciamma',
-        genres: ['Romance' , ' Drama', ' History'],
+        genres: ['Romance'],
         favorites: false
     },
     {
@@ -72,7 +66,19 @@ let queerFilms = [
     {
         title: 'Beginners',
         director: 'Mike Mills',
-        genres: ['Romance', 'Comedy'],
+        genres: ['Romance'],
+        favorites: false
+    },
+    {
+        title: 'All About My Mother',
+        director: 'Pedro Almadovar',
+        genres: ['Drama'],
+        favorites: false
+    },
+    {
+        title: 'Volver',
+        director: 'Pedro Almadovar',
+        genres: ['Comedy'],
         favorites: false
     }
 ]
