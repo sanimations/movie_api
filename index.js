@@ -6,10 +6,11 @@ const express = require('express'),
     mongoose = require('mongoose'),
     Models = require('./models.js');
 
-const Movies = Models.Movie;
-const Users = Models.User;
+
 mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 const app = express();
+const Movies = Models.Movie;
+const Users = Models.User;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
