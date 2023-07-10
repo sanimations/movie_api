@@ -4,10 +4,11 @@ const express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
+    //cors = require('cors'),
     Models = require('./models.js');
 
 
-mongoose.connect('mongodb://localhost/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true});
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -15,12 +16,28 @@ const Users = Models.User;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('common'));
+/*let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+                    //app.use(cors()) can be used for letting any domain access this API
+app.use(cors({
+    origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
+*/
 let auth = require('./auth')(app); //This is the link to the authorization
 const passport = require('passport');
 require('./passport');
 
+//passport.authenticate( 'jwt', { session: false }), 
+// on /movies   movies/:title        movies/:director     /genre      user/:username     user/:username delete   usernamemoviesmovieID
+
 //Get list of all movies
-app.get('/movies', passport.authenticate( 'jwt', { session: false }), (req, res) => {
+app.get('/movies', (req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
@@ -54,7 +71,7 @@ app.get('documentation.html', (req, res) => {
 });
 
 //Gets one movie's data by entering in the title
-app.get('/movies/:Title', passport.authenticate( 'jwt', { session: false }), (req, res) => {
+app.get('/movies/:Title', (req, res) => {
     Movies.findOne( {Title: req.params.Title })
         .then((movie) => {
             res.json(movie);
@@ -66,10 +83,10 @@ app.get('/movies/:Title', passport.authenticate( 'jwt', { session: false }), (re
 });
 
 //Gets one director's data by entering in their name
-app.get('/movies/:director', passport.authenticate( 'jwt', { session: false }), (req, res) => {
-    Movies.findOne( {Director: req.params.Director })
+app.get('/movies/:Director', (req, res) => {
+    Movies.findOne( {'Director.Name': req.params.Director })
         .then((movie) => {
-            res.json(movie);
+            res.json(movie.Director.Bio);
         })
         .catch((err) => {
             console.error(err);
@@ -77,8 +94,8 @@ app.get('/movies/:director', passport.authenticate( 'jwt', { session: false }), 
         });
 });
 
-//Gets teh definition of a genre
-app.get('/:genre', passport.authenticate( 'jwt', { session: false }), (req, res) => {
+//Gets the definition of a genre
+app.get('/:genre', (req, res) => {
     res.json(genreList.find((genre) =>
       { return genre === req.params.genre }));
 });
@@ -111,7 +128,7 @@ app.post('/users', (req, res) => {
 });
 
 //Allows users to update their username  
-app.put('/users/:username/', passport.authenticate( 'jwt', { session: false }), (req, res) => {
+app.put('/users/:Username', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username }, {
         $set:
         {
@@ -132,7 +149,7 @@ app.put('/users/:username/', passport.authenticate( 'jwt', { session: false }), 
         });
 });
 //Allows users to delete their user profile
-app.delete('/users/:Username', passport.authenticate( 'jwt', { session: false }), (req, res) => {
+app.delete('/users/:Username', (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username })
         .then((user) => {
             if (!user) {
@@ -148,7 +165,7 @@ app.delete('/users/:Username', passport.authenticate( 'jwt', { session: false })
 });
 
 //Allows users to add to favorites
-app.put('/users/:Username/movies/:MovieID', passport.authenticate( 'jwt', { session: false }), (req, res) => {
+app.put('/users/:Username/movies/:MovieID', (req, res) => {
     app.post('/users/:Username/movies/:MovieID', (req, res) => {
         Users.findOneAndUpdate({ Username: req.params.Username }, {
             $push: { FavoriteMovies: req.params.MovieID }
