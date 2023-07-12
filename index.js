@@ -128,26 +128,28 @@ app.post('/users', (req, res) => {
 });
 
 //Allows users to update their username  
-app.put('/users/:Username', (req, res) => {
+app.put('/users/:Username', (req, res) => {     
+    console.log('1');
     Users.findOneAndUpdate({ Username: req.params.Username }, {
         $set:
-        {
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+        {   
+            Username: req.body.Username
+            //Left these three in, in case I wanted to add more updates
+            //Password: req.body.Password,  
+            //Email: req.body.Email,
+            //Birthday: req.body.Birthday
         }
     },
-        { new: true }, //This makes sure that the udpated doc is returned in the error section
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send('Error: ' + err);
+        { new: true }).then((user) => { 
+            if(user){
+                res.json(user);
+                console.log('2');
             } else {
-                res.json(updatedUser);
+                console.log('3');
+                res.status(500).send('Something went wrong');
             }
-        });
-});
+        }) 
+    });
 //Allows users to delete their user profile
 app.delete('/users/:Username', (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username })
