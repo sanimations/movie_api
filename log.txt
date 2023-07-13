@@ -11,3 +11,6 @@
 ::1 - - [13/Jul/2023:00:07:55 +0000] "GET /movies/byDirector/Sean%20Baker HTTP/1.1" 404 169 "-" "PostmanRuntime/7.32.3"
 ::1 - - [13/Jul/2023:01:29:47 +0000] "GET /movies/genres/Drama HTTP/1.1" 404 158 "-" "PostmanRuntime/7.32.3"
 ::1 - - [13/Jul/2023:01:29:59 +0000] "GET /movies/genres/Drama HTTP/1.1" 404 158 "-" "PostmanRuntime/7.32.3"
+::1 - - [13/Jul/2023:03:22:34 +0000] "PUT /real/649a1572d0422952495c0ec9 HTTP/1.1" 404 168 "-" "PostmanRuntime/7.32.3"
+::1 - - [13/Jul/2023:03:23:09 +0000] "PUT /real/649a1572d0422952495c0ec9 HTTP/1.1" 404 168 "-" "PostmanRuntime/7.32.3"
+::1 - - [13/Jul/2023:03:26:33 +0000] "POST /users/real/movie/649a1572d0422952495c0ec9 HTTP/1.1" 404 181 "-" "PostmanRuntime/7.32.3"

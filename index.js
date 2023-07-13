@@ -83,7 +83,7 @@ app.get('/movies/:Title', passport.authenticate( 'jwt', { session: false }), (re
 app.get('/movies/directors/:Director', passport.authenticate( 'jwt', { session: false }), (req, res) => {
     Movies.findOne( {'Director.Name': req.params.Director })
         .then((dir) => {
-            res.json(dir.Director.Bio);
+            res.json(dir.Director.Bio + " Birthyear: " + dir.Director.Birth);
         })
         .catch((err) => {
             console.error(err);
@@ -164,22 +164,40 @@ app.delete('/users/:Username', passport.authenticate( 'jwt', { session: false })
         });
 });
 
-//Allows users to add to favorites
-app.put('/users/:Username/movies/:MovieID', passport.authenticate( 'jwt', { session: false }), (req, res) => {
-    app.post('/users/:Username/movies/:MovieID', (req, res) => {
-        Users.findOneAndUpdate({ Username: req.params.Username }, {
-            $push: { FavoriteMovies: req.params.MovieID }
-        },
-            { new: true }, // makes sure updated document is returned
-            (err, updatedUser) => {
-                if (err) {
-                    console.error(err);
-                    res.status(500).send('Error: ' + err);
-                } else {
-                    res.json(updatedUser);
-                }
-            });
-    });
+//Allows users to add to favorites// Add a movie to a user's list of favorites
+app.post('/users/:Username/movies/:MovieID', passport.authenticate( 'jwt', { session: false }), async (req, res) => {
+    const movieId = new mongoose.Types.ObjectId(req.params.MovieID);
+
+    try {
+        const updatedUser = await Users.findOneAndUpdate(
+            { Username: req.params.Username },
+            { $push: { FavoriteMovies: movieId } },
+            { new: true }
+        );
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    }
+});
+
+//Delete a movie from your list of movies
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate( 'jwt', { session: false }), async (req, res) => {
+    const movieId = new mongoose.Types.ObjectId(req.params.MovieID);
+
+    try {
+        const updatedUser = await Users.findOneAndUpdate(
+            { Username: req.params.Username },
+            { $pull: { FavoriteMovies: movieId } },
+            { new: true }
+        );
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    }
 });
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
