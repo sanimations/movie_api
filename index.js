@@ -72,7 +72,6 @@ app.get('documentation.html', (req, res) => {
 
 //Gets one movie's data by entering in the title
 app.get('/movies/:Title', passport.authenticate( 'jwt', { session: false }), (req, res) => {
-    console.log('1');
     Movies.findOne( {Title: req.params.Title })
         .then((movie) => {
             res.json(movie);
@@ -84,12 +83,10 @@ app.get('/movies/:Title', passport.authenticate( 'jwt', { session: false }), (re
 });
 
 //Gets one director's data by entering in their name
-app.get('/movies/byDirector/:Director', (req, res) => {
-    console.log(req.params.Director);
-    console.log('2');
+app.get('/movies/directors/:Director', (req, res) => {
     Movies.findOne( {'Director.Name': req.params.Director })
-        .then((movie) => {
-            res.json(movie.Director.Bio);
+        .then((dir) => {
+            res.json(dir.Director.Bio);
         })
         .catch((err) => {
             console.error(err);
@@ -98,19 +95,15 @@ app.get('/movies/byDirector/:Director', (req, res) => {
 });
 
 //Gets the definition of a genre
-app.get('movies/:Genre', (req, res) => {
-    console.log(req.params.Genre);
-    console.log('2');
+app.get('/movies/genres/:Genre', (req, res) => {
     Movies.findOne( {'Genre.Name': req.params.Genre})
-        .then((genre) => {
-            res.json(genre.Genre.Description);
+        .then((gen) => {
+            res.json(gen.Genre.Description);
         })
         .catch((err) => {
             console.error(err);
             res.status(500).send('Error: ' + err);
         });
-    // res.json(genreList.find((genre) =>
-    //   { return genre === req.params.genre }));
 });
 
 //Allows a new user to register expected in JSON format
