@@ -8,3 +8,4 @@
 ::1 - - [10/Jul/2023:17:58:05 +0000] "PUT /users/Sam/sammis HTTP/1.1" 404 155 "-" "PostmanRuntime/7.32.3"
 ::1 - - [10/Jul/2023:18:01:14 +0000] "PUT /users/Mas52yaG/sammis HTTP/1.1" 404 160 "-" "PostmanRuntime/7.32.3"
 ::1 - - [12/Jul/2023:23:34:24 +0000] "GET /users/fake HTTP/1.1" 404 149 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+::1 - - [13/Jul/2023:00:07:55 +0000] "GET /movies/byDirector/Sean%20Baker HTTP/1.1" 404 169 "-" "PostmanRuntime/7.32.3"
