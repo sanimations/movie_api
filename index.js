@@ -146,10 +146,6 @@ app.put('/users/:Username', async (req, res) => {
         $set:
         {   
             Username: req.body.Username
-            //Left these three in, in case I wanted to add more updates
-            //Password: req.body.Password,  
-            //Email: req.body.Email,
-            //Birthday: req.body.Birthday
         }
     },
         { new: true }).then((user) => { 

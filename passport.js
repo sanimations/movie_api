@@ -10,22 +10,15 @@ let Users = Models.User,
 passport.use(new LocalStrategy({
     usernameField: 'Username',
     passwordField: 'Password'
-},  async (username, password) => {
+}, async (username, password, callback) => {
     console.log(username + ' ' + password);
-    await Users.findOne({ Username: username }, (error, user) =>{
-    if(error) {
-        console.log(error);
-        //return callback(error);
+    foundUser = await Users.findOne({ Username: username });
+    console.log(foundUser);
+    if (!foundUser) {
+        return callback(null, false, { message: 'Incorrect username or password.' });
+    } else {
+        return callback(null, foundUser);
     }
-    
-    if(!user){
-        console.log('incorrect username');
-        //return callback(null, false, {message: 'Incorrect username or password.'});
-    }
-
-    console.log('finished');
-    //return callback(null, user);
-});
 }));
 
 passport.use(new JWTStrategy({
@@ -33,10 +26,10 @@ passport.use(new JWTStrategy({
     secretOrKey: 'your_jwt_secret'
 }, (jwtPayload, callback) => {
     return Users.findByID(jwtPayload._id)
-    .then((user) =>{
-        return callback(null, user);
-    })
-    .catch((error) => {
-        return callback(error)
-    });
+        .then((user) => {
+            return callback(null, user);
+        })
+        .catch((error) => {
+            return callback(error)
+        });
 }));
