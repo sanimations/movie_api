@@ -4,7 +4,8 @@ const express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
-    //cors = require('cors'),
+    cors = require('cors'),
+    bcrypt = require('bcrypt'),
     Models = require('./models.js');
 
 
@@ -16,7 +17,7 @@ const Users = Models.User;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('common'));
-/*let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
                     //app.use(cors()) can be used for letting any domain access this API
 app.use(cors({
     origin: (origin, callback) => {
@@ -28,7 +29,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-*/
+
 let auth = require('./auth')(app); //This is the link to the authorization
 const passport = require('passport');
 require('./passport');
@@ -104,8 +105,25 @@ app.get('/movies/genres/:Genre', passport.authenticate( 'jwt', { session: false 
 });
 
 //Allows a new user to register expected in JSON format
-app.post('/users', (req, res) => {
-    Users.findOne({ Username: req.body.Username })
+app.post('/users',
+/*Validation logic here for request. Make sure username has at least 5 characters and 
+contains alphanumeric characters only.  Make sure there is a password and it also has 
+a length of at least 5.  Make sure email is valid
+*/
+[
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Password', 'Password is required').isLength({min: 6}),
+    check('Email', 'Email does not appear to be valid').isEmail()
+], (req, res) => {
+    //check the validation objects for errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()){
+        return res.status(422).json({errors: errors.array()});
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username })  //Search to see if username already exists
         .then((user) => {
             if (user) {
                 return res.status(400).send(req.body.Username + 'already exists');
@@ -113,7 +131,7 @@ app.post('/users', (req, res) => {
                 Users
                     .create({
                         Username: req.body.Username,
-                        Password: req.body.Password,
+                        Password: hashedPassword,
                         Email: req.body.Email,
                         Birthday: req.body.Birthday
                     })
@@ -131,7 +149,18 @@ app.post('/users', (req, res) => {
 });
 
 //Allows users to update their username  
-app.put('/users/:Username', passport.authenticate( 'jwt', { session: false }), async (req, res) => {
+app.put('/users/:Username', 
+[
+    check('Username', 'Username is required').isLength({min: 5}),  //'Username' takes from req.body
+    check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'You cannot change your password here.').isEmpty(),
+    check('Email', 'You cannot change your email here.').isEmpty()
+], passport.authenticate( 'jwt', { session: false }), async (req, res) => {
+    //check the validation objects for errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()){
+        return res.status(422).json({errors: errors.array()});
+    }
     await Users.findOneAndUpdate({ Username: req.params.Username }, {
         $set:
         {   
@@ -209,6 +238,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something is broken!');
 });
 
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+    console.log('Your app is listening on port '+ port);
 });
