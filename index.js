@@ -13,6 +13,7 @@ mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlPa
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
+const { check, validationResult } = require('express-validator');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
