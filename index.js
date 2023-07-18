@@ -5,7 +5,6 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     cors = require('cors'),
-    bcrypt = require('bcrypt'),
     Models = require('./models.js');
 
 
@@ -118,7 +117,7 @@ a length of at least 5.  Make sure email is valid
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Password', 'Password is required').isLength({min: 6}),
+    check('Password', 'Password must be at least 6 characters').isLength({min: 6}),
     check('Email', 'Email does not appear to be valid').isEmail()
 ], (req, res) => {
     //check the validation objects for errors

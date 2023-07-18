@@ -16,9 +16,9 @@ passport.use(new LocalStrategy({
     console.log(foundUser);
     if (!foundUser) {
         return callback(null, false, { message: 'Incorrect username.' });
-    } if (!username.validatePassword(password)){
-        console.log('incorrect password');
-        return callback(null, false, {message: 'Incorrect Password.'});
+    } if (!foundUser.validatePassword(password)) {
+      console.log('incorrect password');
+      return callback(null, false, {message: 'Incorrect password.'});
     } else {
         return callback(null, foundUser);
     }
@@ -32,6 +32,6 @@ passport.use(new JWTStrategy({
         if(tokens)
         return callback(null, tokens);
         else {
-            return callback(error)
+        return callback(error);
         }
 }));
