@@ -2,31 +2,37 @@
 <html>
     <header>
     My API, movie_api, will be used to create an application
-    to filter between many different LGBTQ+ movies.  I am keeping 
-    the name as movie_api because this will be just the API for
-    the full application that will be titled "PrideFlix".  This
-    API will separate each film into different categories that have
-    not been determined just yet.
+    to filter between many different LGBTQ+ movies.  The full
+    application will have the name "queer films" for now.  
+    In this API you area allowed to search by title and director.
+    I will, hopefully soon, introduce a way to filter by genre
+    as well.  Updates will soon introduce a system to actually
+    keep username and passwords on the site and keep them safe.
+    Most of these endpoints need authorization, which you can get
+    by creating an account and logging in.  This list is comprised
+    of all the endpoints besides /documentation.html and '/'.  
+
     </header>
     <body>
-    --'/movies' uses the GET request to return a list of all movies
+    '/movies' uses the GET request to return a list of all movies
 
-    --'/movies/:title' uses the GET request to return the data for a single movie by title
+    '/movies/:title' uses the GET request to return the data for a single movie by title
 
-    '/movies/:genre' uses the GET request to 
+    '/movies/genres/:genre' uses the GET request to look for the definition of the specfied genre
 
-    --'/movies/:director' uses the GET request to get information on a director using their name
+    '/movies/directors/:director' uses the GET request to get information on a director using their name
 
-    --'/users/:username/FavoriteMovies' uses the GET request to get a list of all the user's favorite movies
+    '/users/:username/movies/MovieID' uses the POST request to add a movie to a users favoritemovies array,
+    this returns the user's information including the array with the added movie
 
-    --'/users/' uses POST request to allow a new user to register
+    '/users' uses POST request to allow a new user to register
     returns JSON object with the new user information and an ID number
 
-    --'/users/:id/:username' uses PUT request so user can update their username, 
+    '/users/:username' uses PUT request so user can update their username, 
     returns JSON object with new user information including the new username
 
-    --'/users/:id' uses DELETE request so the user can delete their account, 
-    this will return a statement that the email has been deleted
+    '/users/username' uses DELETE request so the user can delete their account, 
+    this will return a statement that the user has been deleted
 
 </body>
 
