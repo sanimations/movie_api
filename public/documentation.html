@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <header>
+<header>
     My API, movie_api, will be used to create an application
-    to filter between many different LGBTQ+ movies.  The full
-    application will have the name "queer films" for now.  
+    to filter between many different LGBTQ+ movies. The full
+    application will have the name "queer films" for now.
     In this API you area allowed to search by title and director.
     I will, hopefully soon, introduce a way to filter by genre
-    as well.  Updates will soon introduce a system to actually
+    as well. Updates will soon introduce a system to actually
     keep username and passwords on the site and keep them safe.
     Most of these endpoints need authorization, which you can get
-    by creating an account and logging in.  This list is comprised
-    of all the endpoints besides /documentation.html and '/'.  
+    by creating an account and logging in. This list is comprised
+    of all the endpoints besides /documentation.html and '/'.
 
-    </header>
-    <body>
+</header>
+
+<body>
     '/movies' uses the GET request to return a list of all movies
 
     '/movies/:title' uses the GET request to return the data for a single movie by title
@@ -28,14 +29,13 @@
     '/users' uses POST request to allow a new user to register
     returns JSON object with the new user information and an ID number
 
-    '/users/:username' uses PUT request so user can update their username, 
+    '/users/:username' uses PUT request so user can update their username,
     returns JSON object with new user information including the new username
 
-    '/users/username' uses DELETE request so the user can delete their account, 
+    '/users/username' uses DELETE request so the user can delete their account,
     this will return a statement that the user has been deleted
 
 </body>
 
 
 </html>
-
