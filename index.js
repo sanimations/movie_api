@@ -38,8 +38,7 @@ const passport = require('passport');
 require('./passport');
 
 //Get list of all movies
-//passport.authenticate('jwt', { session: false }), 
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
