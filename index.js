@@ -71,6 +71,24 @@ app.get('documentation.html', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
 
+app.post('/login', async (req, res) => {
+    const {Username, Password} = req.body;
+
+    try {
+        const user = await Users.findOne({ Username });
+
+        if(!user || !user.validatePassword(Password)) {
+            return res.status(401).json({ error: 'Invalid Username or Password'});
+        }
+
+        const token = user.generateJWT();
+        return res.json({ token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    }
+});
+
 //Gets one movie's data by entering in the title
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.findOne({ Title: req.params.Title })
