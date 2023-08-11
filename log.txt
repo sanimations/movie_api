@@ -14,3 +14,4 @@
 ::1 - - [13/Jul/2023:03:22:34 +0000] "PUT /real/649a1572d0422952495c0ec9 HTTP/1.1" 404 168 "-" "PostmanRuntime/7.32.3"
 ::1 - - [13/Jul/2023:03:23:09 +0000] "PUT /real/649a1572d0422952495c0ec9 HTTP/1.1" 404 168 "-" "PostmanRuntime/7.32.3"
 ::1 - - [13/Jul/2023:03:26:33 +0000] "POST /users/real/movie/649a1572d0422952495c0ec9 HTTP/1.1" 404 181 "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [11/Aug/2023:00:54:03 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
