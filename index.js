@@ -180,6 +180,27 @@ app.put('/users/:Username',
                 }
             })
     });
+
+    app.put('/movies/poster/:Title', async (req, res) => {
+
+        await Users.findOneAndUpdate({ Title: req.params.Title }, {
+            $set:
+            {
+                ImagePath: req.body.ImagePath
+            }
+        },
+            { new: true }).then((newPoster) => {
+                if (newPoster) {
+                    res.json(newPoster);
+                    console.log('2');
+                } else {
+                    console.log('3');
+                    res.status(401).send('Something went wrong');
+                }
+            })
+    });
+
+
 //Allows users to delete their user profile
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username })
