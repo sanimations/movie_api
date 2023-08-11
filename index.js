@@ -183,7 +183,7 @@ app.put('/users/:Username',
 
     app.put('/movies/poster/:Title', async (req, res) => {
 
-        await Users.findOneAndUpdate({ Title: req.params.Title }, {
+        await Movies.findOneAndUpdate({ Title: req.params.Title }, {
             $set:
             {
                 ImagePath: req.body.ImagePath
