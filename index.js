@@ -71,22 +71,22 @@ app.get('documentation.html', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-app.post('/login', async (req, res) => {
-    const {Username, Password} = req.body;
+app.post('/login', (req, res) => {
+    const { access, secret } = req.body;
 
-    try {
-        const user = await Users.findOne({ Username });
+    Users.findOne({ Username: access })
+        .then((user) => {
+            if (!user || !user.validatePassword(secret)) {
+                return res.status(400).json({ message: 'Invalid username or password' });
+            }
 
-        if(!user || !user.validatePassword(Password)) {
-            return res.status(401).json({ error: 'Invalid Username or Password'});
-        }
-
-        const token = user.generateJWT();
-        return res.json({ token });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-    }
+            const token = Users.generateJWT(user);
+            return res.json({ user: user.Username, token });
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        });
 });
 
 //Gets one movie's data by entering in the title
