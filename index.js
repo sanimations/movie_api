@@ -151,14 +151,15 @@ app.post('/users',
             });
     });
 
-//Allows users to update their username  
+//Allows users to update their user information  
 app.put('/users/:Username',
     [
-        check('Username', 'Username is required').isLength({ min: 5 }),  //'Username' takes from req.body
-        check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
-        check('Password', 'You cannot change your password here.').isEmpty(),
-        check('Email', 'You cannot change your email here.').isEmpty()
-    ], passport.authenticate('jwt', { session: false }), async (req, res) => {
+        check('Username', 'New username is required to be at least 5 characters').isLength({ min: 5 }),  //'Username' takes from req.body
+        check('Username', 'New username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('Password', 'New password is required to be at least 6 characters').isLength({ min: 6 }), 
+        check('Email', 'New email is not valid').isEmail()
+
+    ], /*passport.authenticate('jwt', { session: false }),*/ async (req, res) => {
         //check the validation objects for errors
         let errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -167,7 +168,10 @@ app.put('/users/:Username',
         await Users.findOneAndUpdate({ Username: req.params.Username }, {
             $set:
             {
-                Username: req.body.Username
+                Username: req.body.Username,
+                Password: req.body.Password,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday
             }
         },
             { new: true }).then((user) => {
