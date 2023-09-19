@@ -159,7 +159,7 @@ app.put('/users/:Username',
         check('Password', 'New password is required to be at least 6 characters').isLength({ min: 6 }), 
         check('Email', 'New email is not valid').isEmail()
 
-    ], /*passport.authenticate('jwt', { session: false }),*/ async (req, res) => {
+    ], passport.authenticate('jwt', { session: false }), async (req, res) => {
         //check the validation objects for errors
         let errors = validationResult(req);
         if (!errors.isEmpty()) {
